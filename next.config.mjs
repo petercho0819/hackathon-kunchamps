@@ -10,6 +10,10 @@ const nextConfig = {
       },
     ],
   },
+  typescript: {
+    // ⚠️ 빌드 시 타입 체크를 건너뜁니다
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;

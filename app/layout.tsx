@@ -22,13 +22,13 @@ export default function RootLayout({ children }) {
       <body className={cn(inter.className, "size-full")}>
         <Providers>{assistantId ? children : <Warnings />}</Providers>
 
-        <Link href="/">
-          <img
-            className="size-8 absolute m-4 top-0 right-0"
-            src="/openai.svg"
-            alt="OpenAI Logo"
-          />
-        </Link>
+        {/* <Link href="/"> */}
+        {/*   <img */}
+        {/*     className="size-8 absolute m-4 top-0 right-0" */}
+        {/*     src="/openai.svg" */}
+        {/*     alt="OpenAI Logo" */}
+        {/*   /> */}
+        {/* </Link> */}
       </body>
     </html>
   );

@@ -303,7 +303,9 @@ async function createBackgroundImage({
   });
 
   if (fixedBgKey) {
-    return fixedBgKey;
+    return {
+      bgImageKey: fixedBgKey,
+    };
   }
 
   const getAiPrompt = async () => {

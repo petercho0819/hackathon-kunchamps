@@ -6,7 +6,6 @@ import Chat from "@/app/components/chat";
 import { LoadingIndicator2 } from "@/app/components/indicatior";
 import ChatContainer from "@/app/dashboard/chat/chat-container";
 import apiAxios from "@/app/utils/axios";
-import { IMAGES } from "@/asset/images";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 

@@ -233,7 +233,7 @@ The outfit should not be revealing, such as a skirt, and must be modest. It is p
 
   const prompt =
     event.prompt +
-    `The important point is: "The character's body must be depicted from the knees up."`;
+    `The important point is: 인물을 그릴 때 인물의 얼굴 부터 무릎까지 그려줘"`;
 
   console.log({
     modelPrompt: prompt,

@@ -130,3 +130,11 @@ export const examplePrompt = `
 `.trim();
 
 export const s3BaseUrl = `https://${process.env.NEXT_PUBLIC_AWS_S3_BUCKET}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com`;
+
+export const RouterPath = {
+  Home: "home",
+  Form: "form",
+  Chat: "chat",
+};
+
+export type RouterPath = (typeof RouterPath)[keyof typeof RouterPath];

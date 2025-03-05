@@ -21,8 +21,6 @@ export async function coreGeneratingSituation({
 }) {
   console.log("coreGeneratingSituation()");
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
   const { situationDetail, userRole, assistantRole } =
     await createSituationDetail({
       character,
@@ -271,7 +269,7 @@ The outfit should not be revealing, such as a skirt, and must be modest. It is p
       input: {
         image: url,
       },
-    }
+    },
   );
 
   const blob = await removeBgOutput.blob();

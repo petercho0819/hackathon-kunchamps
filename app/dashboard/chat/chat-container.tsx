@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable @next/next/no-img-element */
 import React, { PropsWithChildren } from "react";
 import Image from "next/image";

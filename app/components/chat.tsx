@@ -91,7 +91,7 @@ type ChatProps = {
   ) => Promise<string>;
   imageId: string;
   threadId: string;
-  messageHistory: Message[];
+  messageHistory?: Message[];
 };
 
 export default function Chat({
@@ -99,7 +99,7 @@ export default function Chat({
 
   imageId,
   threadId,
-  messageHistory,
+  messageHistory = [],
 }: ChatProps) {
   const [userInput, setUserInput] = useState("");
   const [messages, setMessages] = useState(messageHistory);

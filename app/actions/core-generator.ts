@@ -188,7 +188,7 @@ async function createCharacterImage({
 
   let content = `
 Focus solely on the character with no background
-Focus on depicting a realistic character in a visual novel style.
+Focus on depicting a realistic character
 Ensure the character is known by the name ${model.triggerWord}
 
 Using the provided information, Write prompt for an image generation model.
@@ -233,7 +233,10 @@ The outfit should not be revealing, such as a skirt, and must be modest. It is p
 
   const prompt =
     event.prompt +
-    `The important point is: 인물을 그릴 때 인물의 얼굴 부터 무릎까지 그려줘"`;
+    `The important point is: when you draw the character, draw the whole body
+    Focus solely on the character with no background
+    Focus on depicting a realistic character.
+    `;
 
   console.log({
     modelPrompt: prompt,
@@ -268,7 +271,7 @@ The outfit should not be revealing, such as a skirt, and must be modest. It is p
       input: {
         image: url,
       },
-    },
+    }
   );
 
   const blob = await removeBgOutput.blob();

@@ -37,7 +37,7 @@ export const GeneratedChat = ({ place, character, level }) => {
             backgroundImageUri={getS3Url(bgImageKey)}
             avatarUri={getS3Url(avatarImageKey)}
           >
-            <Chat threadId={threadId} imageId={IMAGES[character]} />
+            <Chat threadId={threadId} imageId={character} />
           </ChatContainer>
         </div>
       </div>

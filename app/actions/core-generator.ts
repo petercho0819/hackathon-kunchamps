@@ -5,11 +5,8 @@ import { zodResponseFormat } from "openai/helpers/zod";
 import { openai } from "@/app/utils/ai-providers";
 import { Character, characterInfoMap, examplePrompt, Place } from "@/constants";
 import { uploadToS3 } from "@/app/actions/s3";
+import { getFixedAvataKey, getFixedBgKey } from "@/lib/fixed-images";
 
-// 과금방지용으로 개발시 비활성화
-const IS_DISABLE_GENERATING = process.env.IS_DISABLE_GENERATING === "1";
-
-// Important:
 export async function coreGeneratingSituation({
   character,
   place,
@@ -120,11 +117,11 @@ async function createThreadId({
   await openai.beta.threads.messages.create(thread.id, {
     role: "user",
     content: `
-# 당신의 역할
+# assistantRole
 - role: ${assistantRole}
 - name: ${characterInfoMap[character].name}
 
-# 대화상대인 나의 역할
+# user
 - role: ${userRole}
 
 # 상황및 회화 레펠단계
@@ -153,12 +150,14 @@ async function createCharacterImage({
   place: string;
   role: string;
 }) {
-  if (IS_DISABLE_GENERATING) {
-    const avatarImageKey =
-      character === "iu" ? "avatar/B1qt3HZAMh6wjCxgvBjo0" : "avatar/vee";
+  const pixedImageKey = getFixedAvataKey({
+    character,
+    place,
+  });
 
+  if (pixedImageKey) {
     return {
-      avatarImageKey,
+      avatarImageKey: pixedImageKey,
     };
   }
 
@@ -196,13 +195,15 @@ Using the provided information, Write prompt for an image generation model.
 - role: ${role}
 - place: ${place}
 - situation: ${situation}
+
+# important!
+- Only one person should be depicted.
 `.trim();
 
   if (characterInfo.gender === "female") {
     content += `
-# important!
 - The outfit should not be revealing, such as a skirt, and must be modest. It is preferable to dress her in clothing that does not emphasize femininity.
-- 오직 한 인물만 그려
+- Clothes with a deep neckline are not allowed.
 `.trim();
   }
 
@@ -297,20 +298,12 @@ async function createBackgroundImage({
   place: string;
   situation: string;
 }) {
-  if (IS_DISABLE_GENERATING) {
-    if (place == "cafe")
-      return {
-        bgImageKey: "background/VFnxvWpKpJHOkYKxDPKUI",
-      };
-    else if (place == "movie")
-      return {
-        bgImageKey: "background/XMC2UB2MxHLB2V_HihLz7",
-      };
-    else {
-      return {
-        bgImageKey: "background/GQkOjMTYgZcV0frtyBPvt",
-      };
-    }
+  const fixedBgKey = getFixedBgKey({
+    place,
+  });
+
+  if (fixedBgKey) {
+    return fixedBgKey;
   }
 
   const getAiPrompt = async () => {

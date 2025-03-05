@@ -1,6 +1,6 @@
 import { Place } from "@/constants";
 
-export const getFixedAvataUrl = ({ place, character }) => {
+export const getFixedAvataKey = ({ place, character }) => {
   if (character === "vee") {
     if (place === Place.cafe) {
       const items = [
@@ -83,9 +83,11 @@ export const getFixedAvataUrl = ({ place, character }) => {
       return items[ranIndx];
     }
   }
+
+  return null;
 };
 
-export const getFixedBgUrl = ({ place }) => {
+export const getFixedBgKey = ({ place }) => {
   if (place === Place.cafe) {
     const items = [""];
 
@@ -109,4 +111,6 @@ export const getFixedBgUrl = ({ place }) => {
 
     return items[ranIndx];
   }
+
+  return null;
 };

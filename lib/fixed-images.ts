@@ -48,7 +48,6 @@ export const getFixedAvataKey = ({ place, character }) => {
         "avatar/uGa1JsxavdOPiHf4wOj22",
         "avatar/1wBwAfngJObYrHAhEdBUY",
         "avatar/jEseBDi6vE0kkLqyIx4BQ",
-        "avatar/R8Tlm0MI2dIzNgFi2A1I",
         "avatar/gVFhOQs2O8hdrB-gtCXY3",
       ];
 

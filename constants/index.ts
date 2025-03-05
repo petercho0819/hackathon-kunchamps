@@ -2,7 +2,7 @@ import { IMAGES } from "@/asset/images";
 
 // 이미지 데이터
 export const IMAGE_LIST = [
-  { id: "iu", url: IMAGES.iu },
+  { id: "iu", url: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDEyMDhfNjYg%2FMDAxNzMzNjIwNTU4MTg4.2x_9HCUSZX1AsnrrbbLe2cXVijbcPLplejCiKQh7v2Ig.qpkiwLmtu963JyEXuSIBV89gU3FhmvBjw-mkFCC5ht8g.JPEG%2FIMG_4629.JPG&type=sc960_832" },
   { id: "vee", url: IMAGES.vee },
 ] as const;
 

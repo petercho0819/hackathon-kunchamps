@@ -10,7 +10,7 @@ import { IMAGES } from "@/asset/images";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-export const GeneratedChat = ({ place, character, level, setRouterPath }) => {
+export const GeneratedChat = ({ place, character, level }) => {
   const { data, isLoading } = useQuery({
     queryKey: ["chat", { place, character, level }],
     queryFn: async () => {

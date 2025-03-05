@@ -86,6 +86,7 @@ ${examplePrompt}
         content: `
 주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해줘
 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
+당신과 나는 친구 사이입니다.
 
 - 장소: ${place}
 `.trim(),
@@ -200,7 +201,8 @@ Using the provided information, Write prompt for an image generation model.
   if (characterInfo.gender === "female") {
     content += `
 # important!
-The outfit should not be revealing, such as a skirt, and must be modest. It is preferable to dress her in clothing that does not emphasize femininity.
+- The outfit should not be revealing, such as a skirt, and must be modest. It is preferable to dress her in clothing that does not emphasize femininity.
+- 오직 한 인물만 그려
 `.trim();
   }
 

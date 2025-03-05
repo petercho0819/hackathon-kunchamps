@@ -1,6 +1,13 @@
 import { Place } from "@/constants";
 
+const IS_GENERATE_AVATA = false;
+const IS_GENERATE_BG = false;
+
 export const getFixedAvataKey = ({ place, character }) => {
+  if (IS_GENERATE_AVATA) {
+    return null;
+  }
+
   if (character === "vee") {
     if (place === Place.cafe) {
       const items = [
@@ -75,6 +82,7 @@ export const getFixedAvataKey = ({ place, character }) => {
         "avatar/KAasRbKwB7UW12bxORCEb",
         "avatar/hunWfXtfs4pNKlSryatgt",
         "avatar/oWbQCMCSjFi1YDw40IrtM",
+        "avatar/FFylVoOKdnS7_XBJLj9uW",
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -87,8 +95,15 @@ export const getFixedAvataKey = ({ place, character }) => {
 };
 
 export const getFixedBgKey = ({ place }) => {
+  if (IS_GENERATE_BG) {
+    return null;
+  }
+
   if (place === Place.cafe) {
-    const items = [""];
+    const items = [
+      "background/_a0UvKMcaXZkciX4LhTaA",
+      "background/dEouTznZKeQh82xTsJF2k",
+    ];
 
     const ranIndx = Math.floor(Math.random() * items.length);
 
@@ -96,7 +111,10 @@ export const getFixedBgKey = ({ place }) => {
   }
 
   if (place === Place.movie) {
-    const items = ["/images/vee-home"];
+    const items = [
+      "background/avmjEduqtWZnR0s-TeBnv",
+      "background/CS87PTR7V9PRBO3Nhx_LA",
+    ];
 
     const ranIndx = Math.floor(Math.random() * items.length);
 
@@ -104,7 +122,10 @@ export const getFixedBgKey = ({ place }) => {
   }
 
   if (place === Place.restaurant) {
-    const items = ["/images/vee-home"];
+    const items = [
+      "background/d1SM8vFzgqfOS6V3sF_TF",
+      "background/J1KonKRJ6c7M9WdB0PnZR",
+    ];
 
     const ranIndx = Math.floor(Math.random() * items.length);
 

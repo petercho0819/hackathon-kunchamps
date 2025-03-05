@@ -1,0 +1,4 @@
+# ../app/api/assistants/route.ts 어시스트 생성
+POST http://localhost:3000/api/assistants HTTP/1.1
+Content-Type: "application/json"
+Accept: application/json

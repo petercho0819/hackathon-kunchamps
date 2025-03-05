@@ -1,1 +1,1 @@
-# hackathon-kunchamps
+# kunchamps

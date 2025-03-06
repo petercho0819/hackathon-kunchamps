@@ -124,13 +124,14 @@ async function createThreadId({
 # user
 - role: ${userRole}
 
-# 상황및 회화 레펠단계
-회화 레벨 단계는 1 ~ 5 단계가 있습니다.
-주어진 상황에 맞게 대화를 진행해주세요.
+# situation and conversation level
+The conversation level has 1 to 5 level.
 
-- 레벨: ${level}
-- 장소: ${place}
-- 상황: ${situationDetail}
+Please proceed with the conversation according to the given situation.
+
+- level: ${level}
+- place: ${place}
+- situation: ${situationDetail}
 `.trim(),
     metadata: {
       role: "system",
@@ -191,7 +192,7 @@ Ensure the character is known by the name ${model.triggerWord}
 
 Using the provided information, Write prompt for an image generation model.
 
-- 성별: ${characterInfo.gender}
+- gender: ${characterInfo.gender}
 - role: ${role}
 - place: ${place}
 - situation: ${situation}
@@ -202,7 +203,7 @@ Using the provided information, Write prompt for an image generation model.
 
   if (characterInfo.gender === "female") {
     content += `
-- The outfit should not be revealing, such as a skirt, and must be modest. It is preferable to dress her in clothing that does not emphasize femininity.
+- The outfit should not be revealing, such as a skirt a t-shirt that shows your sternum, and must be modest. It is preferable to dress her in clothing that does not emphasize femininity.
 - Clothes with a deep neckline are not allowed.
 `.trim();
   }

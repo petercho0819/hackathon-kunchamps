@@ -54,8 +54,8 @@ export const getFixedAvataKey = ({ place, character }) => {
       const items = [
         "avatar/uGa1JsxavdOPiHf4wOj22",
         "avatar/1wBwAfngJObYrHAhEdBUY",
-        "avatar/jEseBDi6vE0kkLqyIx4BQ",
         "avatar/gVFhOQs2O8hdrB-gtCXY3",
+        "avatar/HRGWI5EOxtVCgUadtrDz0",
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -66,9 +66,11 @@ export const getFixedAvataKey = ({ place, character }) => {
     if (place === Place.movie) {
       const items = [
         "avatar/kth3h_K7IldVotdtgcXm5",
-        "avatar/RY49RpHNnQRQOLyJHCQ7D",
-        "avatar/v_NHSIVgh7i8_45k66ml3",
         "avatar/NNb56JmtAspG3gg5mg8Zx",
+        "avatar/UVVtmUpEbrzFlKXgkcA4M",
+        "avatar/FRjOc5aGPQALeef2RYNEU",
+        // "avatar/RY49RpHNnQRQOLyJHCQ7D",
+        // "avatar/v_NHSIVgh7i8_45k66ml3", 노출있는 의상임.
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -79,10 +81,12 @@ export const getFixedAvataKey = ({ place, character }) => {
     if (place === Place.restaurant) {
       const items = [
         "avatar/XHhRpX8TFOW_-IImObBIe",
-        "avatar/KAasRbKwB7UW12bxORCEb",
+        // "avatar/KAasRbKwB7UW12bxORCEb", 실사화가 아님
         "avatar/hunWfXtfs4pNKlSryatgt",
-        "avatar/oWbQCMCSjFi1YDw40IrtM",
+        "avatar/eqrRl8iPHYpGb7cL5M53u",
+        // "avatar/oWbQCMCSjFi1YDw40IrtM", 이상함
         "avatar/FFylVoOKdnS7_XBJLj9uW",
+        "avatar/R_phIf3x4NbmbrCk0umNV",
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -103,6 +107,7 @@ export const getFixedBgKey = ({ place }) => {
     const items = [
       "background/_a0UvKMcaXZkciX4LhTaA",
       "background/dEouTznZKeQh82xTsJF2k",
+      "background/fvjw6uRj9oTRw-GB1bBn-",
     ];
 
     const ranIndx = Math.floor(Math.random() * items.length);
@@ -114,6 +119,7 @@ export const getFixedBgKey = ({ place }) => {
     const items = [
       "background/avmjEduqtWZnR0s-TeBnv",
       "background/CS87PTR7V9PRBO3Nhx_LA",
+      "background/KXx9u8THqTRNXSkCi5qYS",
     ];
 
     const ranIndx = Math.floor(Math.random() * items.length);
@@ -125,6 +131,7 @@ export const getFixedBgKey = ({ place }) => {
     const items = [
       "background/d1SM8vFzgqfOS6V3sF_TF",
       "background/J1KonKRJ6c7M9WdB0PnZR",
+      "background/_fhcoCVQB5gPzc7bIlHWx",
     ];
 
     const ranIndx = Math.floor(Math.random() * items.length);

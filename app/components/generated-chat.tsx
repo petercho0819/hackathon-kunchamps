@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { RouterPath, s3BaseUrl as S3_BASE_URL } from "@/constants";
+import { s3BaseUrl as S3_BASE_URL } from "@/constants";
 import Chat from "@/app/components/chat";
 import { LoadingIndicator2 } from "@/app/components/indicatior";
 import ChatContainer from "@/app/dashboard/chat/chat-container";

@@ -94,6 +94,10 @@ ${examplePrompt}
 
   const event = completion.choices[0].message.parsed;
 
+  console.log({
+    situation: event.situationDetail,
+  });
+
   return event;
 }
 
@@ -126,6 +130,7 @@ async function createThreadId({
 
 # situation and conversation level
 The conversation level has 1 to 5 level.
+난이도에 따라서 문장의 길이와 단어의 선택이 달라집니다.
 
 Please proceed with the conversation according to the given situation.
 
@@ -199,18 +204,18 @@ Using the provided information, Write prompt for an image generation model.
 
 # important!
 - Only one person should be depicted.
+- ${model.triggerWord} must be depicted with the entire body, 
+- ${model.triggerWord} is a realistic character.
 `.trim();
 
   if (characterInfo.gender === "female") {
     content += `
 - The outfit should not be revealing, such as a skirt a t-shirt that shows your sternum, and must be modest. It is preferable to dress her in clothing that does not emphasize femininity.
 - Clothes with a deep neckline are not allowed.
-`.trim();
+- Do not describe revealing clothing.
+- Describe with non-revealing clothing.
+`;
   }
-
-  console.log({
-    situation,
-  });
 
   const promptOutput = z.object({
     prompt: z.string(),
@@ -233,12 +238,11 @@ Using the provided information, Write prompt for an image generation model.
 
   const event = completion.choices[0].message.parsed;
 
-  const prompt =
-    event.prompt +
-    `The important point is: when you draw the character, draw the whole body
-    Focus solely on the character with no background
-    Focus on depicting a realistic character.
-    `;
+  const prompt = `${event.prompt}
+# important!
+- Please do not render objects excluding ${model.triggerWord}.
+- Focus solely on the character with no background
+- The character should be positioned in the center of the image frame.`;
 
   console.log({
     modelPrompt: prompt,
@@ -285,6 +289,10 @@ Using the provided information, Write prompt for an image generation model.
     type: "avatar",
     buffer: bufferData,
     contentType: blob.type,
+  });
+
+  console.log({
+    avatarImageKey: key,
   });
 
   return {
@@ -362,6 +370,10 @@ async function createBackgroundImage({
     type: "background",
     buffer: bufferData,
     contentType: blob.type,
+  });
+
+  console.log({
+    bgImageKey: key,
   });
 
   return {

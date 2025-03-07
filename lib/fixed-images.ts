@@ -14,6 +14,8 @@ export const getFixedAvataKey = ({ place, character }) => {
         "avatar/C0p6WcPbTWRkcOnTvHF0K",
         "avatar/wnWsyPXD-z9AXylP_YhFy",
         "avatar/I4vTd_mXgLiJpMkplK_Mo",
+        "avatar/CsijqTTaCysNbziiZ4u7I",
+        "avatar/ZcxP-xz-6fpN_cCN8R2qS",
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -27,6 +29,8 @@ export const getFixedAvataKey = ({ place, character }) => {
         "avatar/qJ-WvunRx8e6OUIgfZJYl",
         "avatar/PO3Dx4bMofsJ96i5B2Waw",
         "avatar/_i8kYuumr1pHj_6NOoYUb",
+        "avatar/YT8D5TAuqcFWMzIgGCT-L",
+        "avatar/_krxkQ4M-Ek8nHooKlyd8",
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -87,6 +91,7 @@ export const getFixedAvataKey = ({ place, character }) => {
         // "avatar/oWbQCMCSjFi1YDw40IrtM", 이상함
         "avatar/FFylVoOKdnS7_XBJLj9uW",
         "avatar/R_phIf3x4NbmbrCk0umNV",
+        "avatar/wEeI7bP2NP0iLTdtVYUjw",
       ];
 
       const ranIndx = Math.floor(Math.random() * items.length);
@@ -120,6 +125,8 @@ export const getFixedBgKey = ({ place }) => {
       "background/avmjEduqtWZnR0s-TeBnv",
       "background/CS87PTR7V9PRBO3Nhx_LA",
       "background/KXx9u8THqTRNXSkCi5qYS",
+      "background/XqKljBGJDJkoe5xwe2ySI",
+      "background/cUnfn3xwe4ZjXDd0O4Tt1",
     ];
 
     const ranIndx = Math.floor(Math.random() * items.length);
@@ -132,6 +139,7 @@ export const getFixedBgKey = ({ place }) => {
       "background/d1SM8vFzgqfOS6V3sF_TF",
       "background/J1KonKRJ6c7M9WdB0PnZR",
       "background/_fhcoCVQB5gPzc7bIlHWx",
+      "background/J-LlAjU0V4wRaHQjucUd0",
     ];
 
     const ranIndx = Math.floor(Math.random() * items.length);

@@ -177,6 +177,10 @@ async function createCharacterImage({
   const randomId = Math.floor(Math.random() * MAX_GENERATING_IMAGE) + 1;
   const key = `avatar/${character}-${situationKeyword}-${place}-${role}-${randomId}`;
 
+  console.log({
+    avatarImageKey: key,
+  });
+
   if (await isExistS3Key(key)) {
     return {
       avatarImageKey: key,
@@ -255,11 +259,19 @@ Using the provided information, Write prompt for an image generation model.
 
   const event = completion.choices[0].message.parsed;
 
-  const prompt = `${event.prompt}
+  let prompt = `${event.prompt}
 # important!
 - Please do not render objects excluding ${model.triggerWord}.
 - Focus solely on the character with no background
-- The character should be positioned in the center of the image frame.`;
+- There must be only one character rendered
+- The character should be positioned in the center of the image frame.
+- Clothes with a deep neckline are not allowed.`;
+
+  if (characterInfo.gender === "female") {
+    prompt += `
+- Do not describe revealing clothing.
+- Describe with non-revealing clothing.`;
+  }
 
   console.log({
     modelPrompt: prompt,
@@ -308,10 +320,6 @@ Using the provided information, Write prompt for an image generation model.
     contentType: blob.type,
   });
 
-  console.log({
-    avatarImageKey: key,
-  });
-
   return {
     avatarImageKey: key,
   };
@@ -329,6 +337,10 @@ async function createBackgroundImage({
   const randomId = Math.floor(Math.random() * MAX_GENERATING_IMAGE) + 1;
 
   const key = `background/${place}-${situationKeyword}-${randomId}`;
+
+  console.log({
+    bgImageKey: key,
+  });
 
   if (await isExistS3Key(key)) {
     return {
@@ -389,10 +401,6 @@ async function createBackgroundImage({
     key,
     buffer: bufferData,
     contentType: blob.type,
-  });
-
-  console.log({
-    bgImageKey: key,
   });
 
   return {

@@ -10,7 +10,7 @@ const MAX_GENERATING_IMAGE = 5;
 
 export async function coreGeneratingSituation({
   character,
-  place,
+  place: inputPlace,
   level,
   role,
 }: {
@@ -21,10 +21,10 @@ export async function coreGeneratingSituation({
 }) {
   console.log("coreGeneratingSituation()");
 
-  const { situationDetail, situationKeyword, userRole, assistantRole } =
+  const { situationDetail, situationKeyword, userRole, assistantRole, place } =
     await createSituationDetail({
       character,
-      place,
+      place: inputPlace,
       role,
     });
 
@@ -75,6 +75,7 @@ async function createSituationDetail({
     situationKeyword: z.string(),
     assistantRole: z.string(),
     userRole: z.string(),
+    place: z.string(),
   });
 
   const completion = await openai.beta.chat.completions.parse({
@@ -90,12 +91,11 @@ ${examplePrompt}
       {
         role: "user",
         content: `
-주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해주세요
-상황에 대한 키워드는 한단어로 작생해주세요
-당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
-당신의 역할은 ${role} 입니다.
-
-- 장소: ${place}
+- 주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해주세요
+- 상황에 대한 키워드는 한단어로 공백없이 케밥케이스로 작성해주세요
+- 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
+- 당신의 역할은 ${role} 입니다.
+- 장소는 ${place} 이고, 공백없이 케밥케이스로 작성해주세요
 
 - important!: output must be english
 `.trim(),
@@ -111,6 +111,7 @@ ${examplePrompt}
     situationKeyword: event.situationKeyword,
     assistantRole: event.assistantRole,
     userRole: event.userRole,
+    place: event.place,
   });
 
   return event;
@@ -174,8 +175,7 @@ async function createCharacterImage({
   place: string;
   role: string;
 }) {
-  const randomId = Math.floor(Math.random() * MAX_GENERATING_IMAGE) + 1;
-  const key = `avatar/${character}-${situationKeyword}-${place}-${role}-${randomId}`;
+  const key = `avatar/${character}-${situationKeyword}-${place}-${role}`;
 
   console.log({
     avatarImageKey: key,
@@ -227,6 +227,7 @@ Using the provided information, Write prompt for an image generation model.
 - Only one person should be depicted.
 - ${model.triggerWord} must be depicted with the entire body excluding anything below the knees. 
 - ${model.triggerWord} is a realistic character.
+- background should not be included.
 `.trim();
 
   if (characterInfo.gender === "female") {
@@ -261,6 +262,7 @@ Using the provided information, Write prompt for an image generation model.
 
   let prompt = `${event.prompt}
 # important!
+- background is green like chromakey.
 - Please do not render objects excluding ${model.triggerWord}.
 - Focus solely on the character with no background
 - There must be only one character rendered
@@ -334,9 +336,7 @@ async function createBackgroundImage({
   situationDetail: string;
   situationKeyword: string;
 }) {
-  const randomId = Math.floor(Math.random() * MAX_GENERATING_IMAGE) + 1;
-
-  const key = `background/${place}-${situationKeyword}-${randomId}`;
+  const key = `background/${place}-${situationKeyword}`;
 
   console.log({
     bgImageKey: key,

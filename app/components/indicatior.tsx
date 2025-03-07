@@ -2,10 +2,14 @@
 
 import dynamic from "next/dynamic";
 import loadingAni from "./loading-lottie.json";
+import drawLoadingAni from "./draw-loading.json";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
-const LazyLottie = dynamic(() => import("lottie-react"), { ssr: false });
+const LazyLottie = dynamic(() => import("lottie-react"), {
+  ssr: false,
+  loading: () => <div className="size-72" />,
+});
 
 export default function LoadingIndicator({
   className,
@@ -25,13 +29,7 @@ export default function LoadingIndicator({
   );
 }
 
-export function LoadingIndicator2({
-  className,
-  comment,
-}: {
-  className?: string;
-  comment?: string;
-}) {
+export function LoadingIndicator2({ className }: { className?: string }) {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
@@ -46,23 +44,27 @@ export function LoadingIndicator2({
 
   const loadingDot = dotCount === 1 ? "." : dotCount === 2 ? ".." : "...";
 
+  const comment =
+    time < 10
+      ? "환경을 구성 중이에요"
+      : time < 18
+        ? "배경을 그리고 있어요"
+        : time < 26
+          ? "페르소나를 만들고 있어요"
+          : "거의 다 완성 돼가요";
+
   return (
     <div className="fixed flex-col space-y-3 left-1/2 top-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-      <span
-        className={cn(
-          "size-8 rounded-full border-t-3 border-t-black border-r-3 border-r-transparent inline-block animate-spin",
-          className,
-        )}
-      />
-      {comment && (
-        <>
-          <p>
-            {comment}
-            {loadingDot}
-          </p>
-          <p>{time > 15 ? `거의 다 완성 돼가요${loadingDot}` : ""}</p>
-        </>
-      )}
+      <div className="absolute flex flex-col items-center justify-center">
+        <LazyLottie
+          className={cn("size-72", className)}
+          animationData={drawLoadingAni}
+        />
+        <p className="absolute z-10 bottom-5">
+          {comment}
+          {loadingDot}
+        </p>
+      </div>
     </div>
   );
 }

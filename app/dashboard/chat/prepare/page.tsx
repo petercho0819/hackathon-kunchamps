@@ -37,5 +37,5 @@ export default function Page() {
     })().catch(console.error);
   }, [router, searchParams]);
 
-  return <LoadingIndicator2 comment="생성중입니다..." />;
+  return <LoadingIndicator2 />;
 }

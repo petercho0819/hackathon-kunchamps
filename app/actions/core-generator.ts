@@ -90,8 +90,8 @@ ${examplePrompt}
       {
         role: "user",
         content: `
-주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해줘
-상황에 대한 키워드는 한단어의 나타내주세요
+주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해주세요
+상황에 대한 키워드는 한단어로 작생해주세요
 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
 당신의 역할은 ${role} 입니다.
 
@@ -225,7 +225,7 @@ Using the provided information, Write prompt for an image generation model.
 
 # important!
 - Only one person should be depicted.
-- ${model.triggerWord} must be depicted with the entire body, 
+- ${model.triggerWord} must be depicted with the entire body excluding anything below the knees. 
 - ${model.triggerWord} is a realistic character.
 `.trim();
 

@@ -88,7 +88,7 @@ ${examplePrompt}
         content: `
 주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해줘
 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
-당신과 나는 ${role} 사이입니다.
+당신의 역할은 ${role} 입니다.
 
 - 장소: ${place}
 `.trim(),
@@ -122,7 +122,6 @@ async function createThreadId({
   place: string;
 }) {
   const thread = await openai.beta.threads.create();
-  console.log("🚀 ~ assistantRole:", assistantRole)
 
   await openai.beta.threads.messages.create(thread.id, {
     role: "user",
@@ -283,7 +282,7 @@ Using the provided information, Write prompt for an image generation model.
       input: {
         image: url,
       },
-    }
+    },
   );
 
   const blob = await removeBgOutput.blob();

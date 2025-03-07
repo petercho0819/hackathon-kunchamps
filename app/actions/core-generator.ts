@@ -6,8 +6,6 @@ import { openai } from "@/app/utils/ai-providers";
 import { Character, characterInfoMap, examplePrompt, Place } from "@/constants";
 import { isExistS3Key, uploadToS3 } from "@/app/actions/s3";
 
-const MAX_GENERATING_IMAGE = 5;
-
 export async function coreGeneratingSituation({
   character,
   place: inputPlace,

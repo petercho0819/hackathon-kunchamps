@@ -21,6 +21,9 @@ export const GeneratedChat = ({ place, character, level, role }) => {
       });
       return data;
     },
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   if (isLoading || !data) {
@@ -30,7 +33,7 @@ export const GeneratedChat = ({ place, character, level, role }) => {
   const { bgImageKey, avatarImageKey, threadId } = data as any;
 
   return (
-    <main className="size-full flex items-center justify-center">
+    <main className="size-full flex items-center justify-center bg-black">
       <div className="size-full flex items-center justify-center">
         <div className="size-full max-w-[1000px]">
           <ChatContainer

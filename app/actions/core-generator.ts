@@ -4,8 +4,9 @@ import { replicate } from "@/app/ai-providers";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { openai } from "@/app/utils/ai-providers";
 import { Character, characterInfoMap, examplePrompt, Place } from "@/constants";
-import { uploadToS3 } from "@/app/actions/s3";
-import { getFixedAvataKey, getFixedBgKey } from "@/lib/fixed-images";
+import { isExistS3Key, uploadToS3 } from "@/app/actions/s3";
+
+const MAX_GENERATING_IMAGE = 5;
 
 export async function coreGeneratingSituation({
   character,
@@ -20,7 +21,7 @@ export async function coreGeneratingSituation({
 }) {
   console.log("coreGeneratingSituation()");
 
-  const { situationDetail, userRole, assistantRole } =
+  const { situationDetail, situationKeyword, userRole, assistantRole } =
     await createSituationDetail({
       character,
       place,
@@ -39,13 +40,15 @@ export async function coreGeneratingSituation({
       }),
       createCharacterImage({
         place,
-        situation: situationDetail,
+        situationDetail,
         character,
         role: assistantRole,
+        situationKeyword,
       }),
       createBackgroundImage({
         place,
-        situation: situationDetail,
+        situationDetail,
+        situationKeyword,
       }),
     ]);
 
@@ -69,6 +72,7 @@ async function createSituationDetail({
 
   const RolePlayingSituationEvent = z.object({
     situationDetail: z.string(),
+    situationKeyword: z.string(),
     assistantRole: z.string(),
     userRole: z.string(),
   });
@@ -87,10 +91,13 @@ ${examplePrompt}
         role: "user",
         content: `
 주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해줘
+상황에 대한 키워드는 한단어의 나타내주세요
 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
 당신의 역할은 ${role} 입니다.
 
 - 장소: ${place}
+
+- important!: output must be english
 `.trim(),
       },
     ],
@@ -101,6 +108,9 @@ ${examplePrompt}
 
   console.log({
     situation: event.situationDetail,
+    situationKeyword: event.situationKeyword,
+    assistantRole: event.assistantRole,
+    userRole: event.userRole,
   });
 
   return event;
@@ -150,25 +160,26 @@ Please proceed with the conversation according to the given situation.
 
   return thread;
 }
+
 async function createCharacterImage({
   character,
-  situation,
+  situationDetail,
+  situationKeyword,
   place,
   role,
 }: {
   character: Character;
-  situation: string;
+  situationDetail: string;
+  situationKeyword: string;
   place: string;
   role: string;
 }) {
-  const pixedImageKey = getFixedAvataKey({
-    character,
-    place,
-  });
+  const randomId = Math.floor(Math.random() * MAX_GENERATING_IMAGE) + 1;
+  const key = `avatar/${character}-${situationKeyword}-${place}-${role}-${randomId}`;
 
-  if (pixedImageKey) {
+  if (await isExistS3Key(key)) {
     return {
-      avatarImageKey: pixedImageKey,
+      avatarImageKey: key,
     };
   }
 
@@ -205,7 +216,8 @@ Using the provided information, Write prompt for an image generation model.
 - gender: ${characterInfo.gender}
 - role: ${role}
 - place: ${place}
-- situation: ${situation}
+- situation: ${situationDetail}
+- situationKeyword: ${situationKeyword}
 
 # important!
 - Only one person should be depicted.
@@ -290,8 +302,8 @@ Using the provided information, Write prompt for an image generation model.
   const buffer = await blob.arrayBuffer();
   const bufferData = Buffer.from(buffer);
 
-  const { key } = await uploadToS3({
-    type: "avatar",
+  await uploadToS3({
+    key,
     buffer: bufferData,
     contentType: blob.type,
   });
@@ -307,18 +319,20 @@ Using the provided information, Write prompt for an image generation model.
 
 async function createBackgroundImage({
   place,
-  situation,
+  situationDetail,
+  situationKeyword,
 }: {
   place: string;
-  situation: string;
+  situationDetail: string;
+  situationKeyword: string;
 }) {
-  const fixedBgKey = getFixedBgKey({
-    place,
-  });
+  const randomId = Math.floor(Math.random() * MAX_GENERATING_IMAGE) + 1;
 
-  if (fixedBgKey) {
+  const key = `background/${place}-${situationKeyword}-${randomId}`;
+
+  if (await isExistS3Key(key)) {
     return {
-      bgImageKey: fixedBgKey,
+      bgImageKey: key,
     };
   }
 
@@ -337,7 +351,7 @@ async function createBackgroundImage({
         },
         {
           role: "user",
-          content: situation,
+          content: situationDetail,
         },
       ],
       response_format: zodResponseFormat(promptOutput, "event"),
@@ -371,8 +385,8 @@ async function createBackgroundImage({
 
   const bufferData = Buffer.from(buffer);
 
-  const { key } = await uploadToS3({
-    type: "background",
+  await uploadToS3({
+    key,
     buffer: bufferData,
     contentType: blob.type,
   });

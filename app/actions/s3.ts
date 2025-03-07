@@ -1,6 +1,9 @@
 import { s3BaseUrl as S3_BASE_URL } from "@/constants";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { nanoid } from "nanoid";
+import {
+  S3Client,
+  PutObjectCommand,
+  HeadObjectCommand,
+} from "@aws-sdk/client-s3";
 
 // S3 클라이언트 초기화
 export const s3Client = new S3Client({
@@ -11,18 +14,35 @@ export const s3Client = new S3Client({
   },
 });
 
+export async function isExistS3Key(key: string) {
+  const headParams = {
+    Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET!,
+    Key: `${key}.png`,
+  };
+
+  try {
+    await s3Client.send(new HeadObjectCommand(headParams));
+
+    return true;
+  } catch (error) {
+    if (error.name === "NotFound") {
+      return false;
+    }
+
+    console.error("isExistS3Key() error:", error);
+    throw error;
+  }
+}
+
 export async function uploadToS3({
-  type,
+  key,
   buffer,
   contentType = "image/png",
 }: {
-  type: "avatar" | "background";
+  key: string;
   buffer: Buffer;
   contentType?: string;
 }) {
-  const id = nanoid();
-  const key = `${type}/${id}`;
-
   const uploadParams = {
     Bucket: process.env.NEXT_PUBLIC_AWS_S3_BUCKET!,
     Key: `${key}.png`,

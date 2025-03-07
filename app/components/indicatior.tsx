@@ -44,6 +44,8 @@ export function LoadingIndicator2({
 
   const dotCount = (time % 3) + 1;
 
+  const loadingDot = dotCount === 1 ? "." : dotCount === 2 ? ".." : "...";
+
   return (
     <div className="fixed flex-col space-y-3 left-1/2 top-1/2 z-50 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center">
       <span
@@ -56,9 +58,9 @@ export function LoadingIndicator2({
         <>
           <p>
             {comment}
-            {dotCount === 1 ? "." : dotCount === 2 ? ".." : "..."}
+            {loadingDot}
           </p>
-          <p>{time > 10 ? "거의 다 완성 돼가요..." : ""}</p>
+          <p>{time > 15 ? `거의 다 완성 돼가요${loadingDot}` : ""}</p>
         </>
       )}
     </div>

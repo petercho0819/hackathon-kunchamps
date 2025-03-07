@@ -9,14 +9,15 @@ import apiAxios from "@/app/utils/axios";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 
-export const GeneratedChat = ({ place, character, level }) => {
+export const GeneratedChat = ({ place, character, level, role }) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["chat", { place, character, level }],
+    queryKey: ["chat", { place, character, level, role }],
     queryFn: async () => {
       const { data } = await apiAxios.post("/generate", {
         place,
         character,
         level,
+        role,
       });
       return data;
     },

@@ -16,6 +16,7 @@ export default function Page() {
       const character = searchParams.get("character") as Character;
       const place = searchParams.get("place") as Place;
       const level = searchParams.get("level");
+      const role = searchParams.get("level");
 
       const params = new URLSearchParams();
       params.set("imageId", character);
@@ -25,6 +26,7 @@ export default function Page() {
           character,
           place,
           level: +level,
+          role,
         });
       //
       params.set("bgImageKey", bgImageKey);

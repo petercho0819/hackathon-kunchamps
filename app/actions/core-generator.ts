@@ -11,10 +11,12 @@ export async function coreGeneratingSituation({
   character,
   place,
   level,
+  role,
 }: {
   character: Character;
   place: Place;
   level: number;
+  role: string;
 }) {
   console.log("coreGeneratingSituation()");
 
@@ -22,6 +24,7 @@ export async function coreGeneratingSituation({
     await createSituationDetail({
       character,
       place,
+      role,
     });
 
   const [{ id: threadId }, { avatarImageKey }, { bgImageKey }] =
@@ -56,9 +59,11 @@ export async function coreGeneratingSituation({
 async function createSituationDetail({
   character,
   place,
+  role,
 }: {
   character: string;
   place: string;
+  role: string;
 }) {
   const characterInfo = characterInfoMap[character];
 
@@ -83,7 +88,7 @@ ${examplePrompt}
         content: `
 주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해줘
 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
-당신과 나는 친구 사이입니다.
+당신과 나는 ${role} 사이입니다.
 
 - 장소: ${place}
 `.trim(),
@@ -117,6 +122,7 @@ async function createThreadId({
   place: string;
 }) {
   const thread = await openai.beta.threads.create();
+  console.log("🚀 ~ assistantRole:", assistantRole)
 
   await openai.beta.threads.messages.create(thread.id, {
     role: "user",
@@ -277,7 +283,7 @@ Using the provided information, Write prompt for an image generation model.
       input: {
         image: url,
       },
-    },
+    }
   );
 
   const blob = await removeBgOutput.blob();

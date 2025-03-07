@@ -24,7 +24,7 @@ export const GeneratedChat = ({ place, character, level, role }) => {
   });
 
   if (isLoading || !data) {
-    return <LoadingIndicator2 />;
+    return <LoadingIndicator2 comment={"이미지 생성중입니다"} />;
   }
 
   const { bgImageKey, avatarImageKey, threadId } = data as any;

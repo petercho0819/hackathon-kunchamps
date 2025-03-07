@@ -12,6 +12,7 @@ const Home = () => {
     place: "",
     character: "",
     level: 0,
+    role: "",
   });
 
   if (routerPath === RouterPath.Home) {
@@ -22,8 +23,8 @@ const Home = () => {
     return (
       <div className="size-full flex justify-center items-center">
         <ChoiceForm
-          onSubmit={({ place, character, level }) => {
-            setFormData({ place, character, level });
+          onSubmit={({ place, character, level, role }) => {
+            setFormData({ place, character, level, role });
             setRouterPath(RouterPath.Chat);
           }}
         />

@@ -18,13 +18,35 @@ export default function ChoiceForm({
     place: Place;
     character: Character;
     level: number;
+    role: string;
   }) => void;
 }) {
   const [selectedImageId, setSelectedImageId] = useState<Character | null>(
-    null,
+    null
   );
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [selectedLevel, setSelectedLevel] = useState(0);
+  const options = ["친구", "연인", "직장동료", "기타"];
+  const [persona, setPersona] = useState(options[0]);
+  const [customInput, setCustomInput] = useState("");
+
+  const handlePersonaChange = (e) => {
+    const value = e.target.value;
+    setPersona(value);
+
+    // 기타 이외의 옵션을 선택하면 사용자 입력 초기화
+    if (value !== "기타") {
+      setCustomInput("");
+    }
+  };
+
+  const handleCustomInputChange = (e) => {
+    const value = e.target.value;
+    setCustomInput(value);
+  };
+
+  // 최종 persona 값 (기타 선택 시 사용자 입력을 반환)
+  const finalPersona = persona === "기타" ? customInput : persona;
 
   const [open, setOpen] = useState(false);
   const [placeModalOpen, setPlaceModalOpen] = useState(false);
@@ -45,7 +67,9 @@ export default function ChoiceForm({
   };
 
   const isAllSelected = () => {
-    return selectedImageId && selectedPlace && selectedLevel > 0;
+    return (
+      finalPersona && selectedImageId && selectedPlace && selectedLevel > 0
+    );
   };
 
   const handleAddImage = () => {
@@ -57,6 +81,7 @@ export default function ChoiceForm({
       place: selectedPlace,
       character: selectedImageId,
       level: selectedLevel,
+      role: finalPersona,
     });
   };
   const handleAddPlace = () => {
@@ -95,7 +120,7 @@ export default function ChoiceForm({
       <div className="max-w-2xl w-full mx-auto p-8 bg-white rounded-xl shadow-lg space-y-12">
         {/* 이미지 섹션 */}
         <div className="space-y-4 mb-10">
-          <h2 className="text-xl font-semibold">아이돌 선택</h2>
+          <h2 className="text-xl font-semibold">페르소나 선택</h2>
           <div className="flex gap-4 flex-wrap">
             {IMAGE_LIST.map((image) => (
               <div
@@ -180,6 +205,37 @@ export default function ChoiceForm({
             >
               장소 추가
             </button>
+          </div>
+        </div>
+
+        {/* 페르소나 역할 선택 섹션 */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">페르소나 역할 선택</h2>
+          <div className="flex flex-wrap gap-4 mb-4 h-13">
+            {options.map((option) => (
+              <div key={option} className="flex items-center">
+                <input
+                  type="radio"
+                  id={option}
+                  name="persona"
+                  value={option}
+                  checked={persona === option}
+                  onChange={handlePersonaChange}
+                  className="mr-2"
+                />
+                <label htmlFor={option}>{option}</label>
+
+                {option === "기타" && persona === "기타" && (
+                  <input
+                    type="text"
+                    value={customInput}
+                    onChange={handleCustomInputChange}
+                    placeholder="역할을 직접 입력하세요"
+                    className="ml-2 border border-gray-300 rounded px-3 py-2 w-48"
+                  />
+                )}
+              </div>
+            ))}
           </div>
         </div>
 

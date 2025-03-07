@@ -15,6 +15,7 @@ const ChoicePage = () => {
         params.set("place", place);
         params.set("character", character);
         params.set("level", level.toString());
+        params.set("role", level.toString());
 
         router.push(`/dashboard/chat/prepare?${params.toString()}`);
       }}

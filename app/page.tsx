@@ -43,7 +43,7 @@ const Home = () => {
 function HomeStart({ setRouterPath }) {
   return (
     <main className="flex flex-col justify-center items-center h-screen bg-white">
-      <h1 className="text-2xl mb-5 font-semibold">Kunchamps</h1>
+      <h1 className="text-2xl mb-5 font-semibold">켠챔스</h1>
       <div className="flex flex-row gap-5 max-w-5xl w-full p-5 box-border items-center justify-center">
         <div
           onClick={() => setRouterPath(RouterPath.Form)}

@@ -5,12 +5,12 @@ import Warnings from "./components/warnings";
 import { assistantId } from "./assistant-config";
 import Providers from "@/app/query-client";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Assistants API Quickstart",
-  description: "A quickstart template using the Assistants API with OpenAI",
+  title: "켠챔스",
+  description: "ai 해커톤",
   icons: {
     icon: "/openai.svg",
   },

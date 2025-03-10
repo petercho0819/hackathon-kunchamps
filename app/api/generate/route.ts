@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       place,
       level,
       role,
-    });
+    }); 
 
     return NextResponse.json(res);
   } catch (error) {

@@ -31,10 +31,8 @@ const Home = () => {
       </div>
     );
   }
-  //
+
   if (routerPath === RouterPath.Chat) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     return <GeneratedChat {...formData} />;
   }
 
@@ -50,7 +48,7 @@ function HomeStart({ setRouterPath }) {
           onClick={() => setRouterPath(RouterPath.Form)}
           className="text-black bg-green-300 flex text-base rounded-4xl justify-center items-center text-center cursor-pointer max-w-xs w-30 h-30 p-5 transition-colors duration-300 font-medium hover:bg-gray-300"
         >
-          start
+          START
         </div>
       </div>
     </main>

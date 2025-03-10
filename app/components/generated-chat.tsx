@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { s3BaseUrl as S3_BASE_URL } from "@/constants";
@@ -30,7 +29,7 @@ export const GeneratedChat = ({ place, character, level, role }) => {
     return <LoadingIndicator2 />;
   }
 
-  const { bgImageKey, avatarImageKey, threadId } = data as any;
+  const { bgImageKey, avatarImageKey, threadId } = data;
 
   return (
     <main className="size-full flex items-center justify-center bg-black">

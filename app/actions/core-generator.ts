@@ -5,6 +5,29 @@ import { zodResponseFormat } from "openai/helpers/zod";
 import { openai } from "@/app/utils/ai-providers";
 import { Character, characterInfoMap, examplePrompt, Place } from "@/constants";
 import { isExistS3Key, uploadToS3 } from "@/app/actions/s3";
+import supabase from "../api/supabase/supabase";
+
+async function getSituationKeyword(character, place, role, situationKeywords) {
+  // DB에서 상황 키워드 조회
+  let situationKeywordsFromDB = await getSituationKeywordByPlace(
+    character,
+    place,
+    role
+  );
+
+  // 키워드가 없으면 새로 생성
+  if (situationKeywordsFromDB.length === 0) {
+    situationKeywordsFromDB = await createSituationKeyword(
+      character,
+      place,
+      role,
+      situationKeywords
+    );
+  }
+
+  // 랜덤하게 상황 선택하여 반환
+  return getRandomSituation(situationKeywordsFromDB);
+}
 
 export async function coreGeneratingSituation({
   character,
@@ -19,12 +42,18 @@ export async function coreGeneratingSituation({
 }) {
   console.log("coreGeneratingSituation()");
 
-  const { situationDetail, situationKeyword, userRole, assistantRole, place } =
+  const { situationKeywords, situationDetail, userRole, assistantRole, place } =
     await createSituationDetail({
       character,
       place: inputPlace,
       role,
     });
+  const situationKeyword = await getSituationKeyword(
+    character,
+    place,
+    role,
+    situationKeywords
+  );
 
   const [{ id: threadId }, { avatarImageKey }, { bgImageKey }] =
     await Promise.all([
@@ -70,7 +99,7 @@ async function createSituationDetail({
 
   const RolePlayingSituationEvent = z.object({
     situationDetail: z.string(),
-    situationKeyword: z.string(),
+    situationKeywords: z.array(z.string()), // Changed back to simple array
     assistantRole: z.string(),
     userRole: z.string(),
     place: z.string(),
@@ -90,7 +119,8 @@ ${examplePrompt}
         role: "user",
         content: `
 - 주어진 장소에 맞게 역할을 부여해주고 디테일한 상황도 작성해주세요
-- 상황에 대한 키워드는 한단어로 공백없이 케밥케이스로 작성해주세요
+- 상황에 대한 키워드는 정확히 5가지를 작성해주세요 (반드시 5개의 키워드가 필요합니다)
+- 각 키워드는 한단어로 공백없이 케밥케이스로 작성해주세요
 - 당신의 성별은 "${characterInfo.gender}" 이고, 이름은 "${characterInfo.name}" 입니다.
 - 당신의 역할은 ${role} 입니다.
 - 장소는 ${place} 이고, 공백없이 케밥케이스로 작성해주세요
@@ -106,7 +136,7 @@ ${examplePrompt}
 
   console.log({
     situation: event.situationDetail,
-    situationKeyword: event.situationKeyword,
+    situationKeywords: event.situationKeywords, // Updated log to show array
     assistantRole: event.assistantRole,
     userRole: event.userRole,
     place: event.place,
@@ -306,7 +336,7 @@ Using the provided information, Write prompt for an image generation model.
       input: {
         image: url,
       },
-    },
+    }
   );
 
   const blob = await removeBgOutput.blob();
@@ -404,4 +434,50 @@ async function createBackgroundImage({
   return {
     bgImageKey: key,
   };
+}
+
+async function getSituationKeywordByPlace(
+  persona: string,
+  place: string,
+  role: string
+) {
+  const { data, error } = await supabase
+    .from("positionKeyWord")
+    .select("*")
+    .eq("persona", persona)
+    .eq("place", place)
+    .eq("role", role);
+
+  if (error) {
+    console.error("Error fetching data:", error);
+    return [];
+  }
+  if (data && data.length > 0) {
+    return data;
+  }
+  return [];
+}
+
+async function createSituationKeyword(persona, place, role, situationKeywords) {
+  const situationKeywordData = situationKeywords.map((situationKeyword) => {
+    return {
+      persona,
+      place,
+      role,
+      situationKeyword,
+    };
+  });
+  const { error } = await supabase
+    .from("positionKeyWord")
+    .insert(situationKeywordData);
+  if (error) {
+    console.error("Error createSituationKeyword data:", error);
+    return [];
+  }
+  return situationKeywordData;
+}
+
+function getRandomSituation(situationKeyword): string {
+  const ranIndx = Math.floor(Math.random() * situationKeyword.length);
+  return situationKeyword[ranIndx].situationKeyword;
 }
